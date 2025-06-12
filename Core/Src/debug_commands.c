@@ -15,19 +15,19 @@ static const char RNG_CALL[]="RNG:";
 
 void LED_RED_RESP(UART_HandleTypeDef* UART){
 		HAL_GPIO_TogglePin(LD1_GPIO_Port,LD1_Pin);
-		HAL_UART_Transmit(UART,&LED_RED,len(LED_RED),5);
+		HAL_UART_Transmit(UART,&LED_RED,strlen(LED_RED),5);
 }
 
 void LED_BLUE_RESP(UART_HandleTypeDef* UART)
 {
 		HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
-		HAL_UART_Transmit(UART,&LED_RED,len(LED_RED),5);
+		HAL_UART_Transmit(UART,&LED_RED,strlen(LED_RED),5);
 }
 
 void LED_GREEN_RESP(UART_HandleTypeDef* UART)
 {
 		HAL_GPIO_TogglePin(LD3_GPIO_Port,LD3_Pin);
-		HAL_UART_Transmit(UART,&LED_RED,len(LED_RED),5);
+		HAL_UART_Transmit(UART,&LED_RED,strlen(LED_RED),5);
 }
 
 void RNG_CALL_RESP(UART_HandleTypeDef* UART,number)
