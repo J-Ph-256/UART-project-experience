@@ -30,9 +30,15 @@ void LED_GREEN_RESP(UART_HandleTypeDef* UART)
 		HAL_UART_Transmit(UART,&LED_RED,strlen(LED_RED),5);
 }
 
-void RNG_CALL_RESP(UART_HandleTypeDef* UART,number)
+void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number)
 {
-	return;
+	uint32_t result;
+	HAL_RNG_Generate_Random_Number(hrng,&result);
+	buf="RNG is "
+	char new[20];
+	sprintf(new,"%i",result%number);
+	strcat(buf,new);
+	HAL_UART_Transmit(UART,&buf,strlen(buf),5);
 }
 
 
