@@ -18,7 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "stm32f4xx_hal.h"
+#include "debug_commands.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -48,7 +49,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-volatile char buf[64];
+volatile char buf[BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,15 +103,14 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
 
   /* USER CODE BEGIN 2 */
-
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_UART_Receive(huart2,buf,64,5);
-	  execute_command(buf,huart2);
+	  HAL_UART_Receive(&huart2,&buf,BUFFER_SIZE,5);
+	  execute_command(buf,&huart2);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
