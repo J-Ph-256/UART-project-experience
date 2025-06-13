@@ -18,7 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "debug_commands.h"
+#include "stdio.h"
+#include "string.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -31,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define BUFFER_SIZE 64
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,7 +49,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+char buf[BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -107,6 +109,17 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+	HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,1);
+
+	if (strlen(buf)>0)
+	{
+		uint8_t successmessage[]="success\n";
+		HAL_UART_Transmit(&huart3,&successmessage,9,1);
+		HAL_Delay(200);
+		execute_command(&buf,&huart3,&hrng);
+	}
+
+	memset(buf,0,BUFFER_SIZE);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
