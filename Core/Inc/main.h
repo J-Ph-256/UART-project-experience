@@ -93,7 +93,7 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-#define BUFFER_SIZE 64
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
