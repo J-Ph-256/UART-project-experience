@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BUFFER_SIZE 64
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -109,13 +109,11 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-	HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,1);
+	HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
 
 	if (strlen(buf)>0)
 	{
-		uint8_t successmessage[]="success\n";
-		HAL_UART_Transmit(&huart3,&successmessage,9,1);
-		HAL_Delay(200);
+
 		execute_command(&buf,&huart3,&hrng);
 	}
 
