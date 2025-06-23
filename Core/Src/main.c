@@ -87,7 +87,6 @@ void COUNTING_TICK(int timeDelta)
 		counter++;
 		time_since_change=HAL_GetTick();
 		sprintf(&buf,"Counter is %lu\n",counter);
-		HAL_UART_Transmit(&huart3,&buf,strlen(counter),5);
 }
 	return;
 }
@@ -98,13 +97,13 @@ void COUNTING_DOWN_TICK(int timeDelta)
 		counter--;
 		time_since_change=HAL_GetTick();
 		sprintf(&buf,"Counter is %lu\n",counter);
-		HAL_UART_Transmit(&huart3,&buf,strlen(counter),5);
 }
 	return;
 }
 
 void UI_CHANGE()
 {
+	HAL_UART_Transmit(&huart3,&buf,strlen(counter),5);
 	switch(counter%8)
 	{
 	case 0:
@@ -223,6 +222,7 @@ int main(void)
 		COUNTING_DOWN_TICK(timedelta);
 	  }
 	  if(MODE!=MAIN_MODE) UI_CHANGE();
+
   }
   /* USER CODE END 3 */
 }
