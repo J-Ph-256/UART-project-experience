@@ -52,7 +52,7 @@ RTC_TimeTypeDef RTCTimeTypeCurrent;
 RTC_TimeTypeDef RTCTimeTypeSinceChange;
 volatile char buf[BUFFER_SIZE];
 
-int counter;
+uint32_t counter;
 int time_since_change;
 int current_time;
 int MODE;
@@ -86,6 +86,19 @@ void COUNTING_TICK(int timeDelta)
 	{
 		counter++;
 		time_since_change=HAL_GetTick();
+		sprintf(&buf,"Counter is %lu\n",counter);
+		HAL_UART_Transmit(&huart3,&buf,strlen(counter),5);
+}
+	return;
+}
+void COUNTING_DOWN_TICK(int timeDelta)
+{
+	if (timeDelta>1000)
+	{
+		counter--;
+		time_since_change=HAL_GetTick();
+		sprintf(&buf,"Counter is %lu\n",counter);
+		HAL_UART_Transmit(&huart3,&buf,strlen(counter),5);
 }
 	return;
 }
@@ -206,6 +219,8 @@ int main(void)
 	  case COUNTING_MODE:
 	  	COUNTING_TICK(timedelta);
 	  	break;
+	  case COUNTING_DOWN_MODE:
+		COUNTING_DOWN_TICK(timedelta);
 	  }
 	  if(MODE!=MAIN_MODE) UI_CHANGE();
   }

@@ -15,6 +15,8 @@ static const char PARTY_TIME[]="PARTY";
 
 static const char COUNTING[]="COUNT UP";
 
+static const char COUNTING_DOWN[]="COUNT DOWN";
+
 static const char RETURN[]="RETURN";
 
 static const char RESP[]="UNDERSTOOD\n";
@@ -43,7 +45,7 @@ void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
 	HAL_RNG_GenerateRandomNumber(hrng,&result);
 	result=result%number;
 	result++;
-	sprintf(&response,"RNG is %lu",result);
+	sprintf(&response,"RNG is %lu\n",result);
 	if (result==number) sprintf(&response,"RNG is %lu, Wow lucky!!\n",result);
 	if (result==1) sprintf(&response,"RNG is %lu. That's rough.\n",result);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
@@ -60,6 +62,14 @@ void PARTY_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 void COUNTING_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=COUNTING_MODE;
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
+}
+
+void COUNTING_DOWN_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
+{
+	*MODE=COUNTING_DOWN_MODE;
 	char response[64];
 	sprintf(&response,"MODE is %i\n",*MODE);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
@@ -92,6 +102,7 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 		else if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE(UARTHANDLE,mode);
+		else if (strcmp(COUNTING_DOWN,command)==0) COUNTING_DOWN_MODE_CHANGE(UARTHANDLE,mode);
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
 
 }
