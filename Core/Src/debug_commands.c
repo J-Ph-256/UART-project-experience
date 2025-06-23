@@ -15,7 +15,7 @@ static const char PARTY_TIME[]="PARTY";
 
 static const char COUNTING[]="COUNT UP";
 
-static const char RETURN[]="NORMAL";
+static const char RETURN[]="RETURN";
 
 static const char RESP[]="UNDERSTOOD\n";
 
@@ -43,7 +43,9 @@ void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
 	HAL_RNG_GenerateRandomNumber(hrng,&result);
 	result=result%number;
 	result++;
-	sprintf(&response,"RNG is %lui",result);
+	sprintf(&response,"RNG is %lu",result);
+	if (result==number) sprintf(&response,"RNG is %lu, Wow lucky!!\n",result);
+	if (result==1) sprintf(&response,"RNG is %lu. That's rough.\n",result);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
 
