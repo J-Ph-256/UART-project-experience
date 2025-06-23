@@ -36,7 +36,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-volatile int MODE;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

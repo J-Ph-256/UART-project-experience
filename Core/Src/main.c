@@ -51,10 +51,10 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 volatile char buf[BUFFER_SIZE];
-volatile int MODE=0;
 int counter=0;
 time_t time_since_change;
 time_t current_time;
+int MODE;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,7 +73,7 @@ void PARTY_TICK()
 {
 	if (current_time-time_since_change>0.25)
 	{
-		HAL_RNG_GenerateRandomNumber(hrng,&counter);
+		HAL_RNG_GenerateRandomNumber(&hrng,&counter);
 		time(&time_since_change);
 	}
 	return;
@@ -171,7 +171,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   time(&time_since_change);
   /* USER CODE END 2 */
-
+  MODE=MAIN_MODE;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -183,7 +183,7 @@ int main(void)
 	if (strlen(buf)>0)
 	{
 
-		execute_command(&buf,&huart3,&hrng);
+		execute_command(&buf,&huart3,&hrng,&MODE);
 	}
 
 	memset(buf,0,BUFFER_SIZE);
