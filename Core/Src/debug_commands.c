@@ -50,24 +50,29 @@ void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
 void PARTY_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=PARTY_MODE;
-	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
 
 void COUNTING_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=COUNTING_MODE;
-	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
 
 void NORMAL_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=MAIN_MODE;
-	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
 
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng,int *mode)
 {
-		if(*mode==0){
 		if (strcmp(LED_RED,command)==0) LED_RED_RESP(UARTHANDLE);
 
 		else if (strcmp(LED_BLUE,command)==0) LED_BLUE_RESP(UARTHANDLE);
@@ -81,9 +86,6 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 			ptr++;
 			uint32_t number=atoi(ptr);
 			RNG_CALL_RESP(UARTHANDLE,number,hrng);
-		}
-		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
-
 		}
 		else if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(UARTHANDLE,mode);

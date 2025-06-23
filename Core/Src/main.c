@@ -51,7 +51,7 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 RTC_TimeTypeDef RTCTimeType;
 volatile char buf[BUFFER_SIZE];
 
-int counter=0;
+int counter;
 float time_since_change;
 float current_time;
 int MODE;
@@ -171,7 +171,8 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-
+  MODE=0;
+  counter=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -182,24 +183,23 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
-	  	time(&current_time);
-	  	if (strlen(buf)>0)
-	  	{
+	  if (strlen(buf)>0)
+	  {
 
-	  		execute_command(&buf,&huart3,&hrng);
-	  	}
+	  	execute_command(&buf,&huart3,&hrng,&MODE);
+	  }
 
-	  	memset(buf,0,BUFFER_SIZE);
-	  	switch(MODE)
-	  	{
-	  	case PARTY_MODE:
-	  		PARTY_TICK();
-	  		break;
-	  	case COUNTING_MODE:
-	  		COUNTING_TICK();
-	  		break;
-	  	}
-	  	if(MODE!=MAIN_MODE) UI_CHANGE();
+	  memset(buf,0,BUFFER_SIZE);
+	  switch(MODE)
+	  {
+	  case PARTY_MODE:
+	  	PARTY_TICK();
+	  	break;
+	  case COUNTING_MODE:
+	  	COUNTING_TICK();
+	  	break;
+	  }
+	  if(MODE!=MAIN_MODE) UI_CHANGE();
   }
   /* USER CODE END 3 */
 }
