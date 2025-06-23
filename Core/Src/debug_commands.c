@@ -82,11 +82,12 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 			uint32_t number=atoi(ptr);
 			RNG_CALL_RESP(UARTHANDLE,number,hrng);
 		}
-
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
+
 		}
-		if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(UARTHANDLE,mode);
+		else if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE(UARTHANDLE,mode);
+		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
 
 }

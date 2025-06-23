@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "time.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -49,10 +48,12 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
+RTC_TimeTypeDef RTCTimeType;
 volatile char buf[BUFFER_SIZE];
+
 int counter=0;
-clock_t time_since_change;
-clock_t current_time;
+float time_since_change;
+float current_time;
 int MODE;
 /* USER CODE END PV */
 
@@ -71,19 +72,19 @@ static void MX_RTC_Init(void);
 /* USER CODE BEGIN 0 */
 void PARTY_TICK()
 {
-	if ((current_time-time_since_change)/CLOCKS_PER_SEC>0.25)
+	if (1>0.25)
 	{
 		HAL_RNG_GenerateRandomNumber(&hrng,&counter);
-		time(&time_since_change);
+		//GET TIME
 	}
 	return;
 }
 void COUNTING_TICK()
 {
-	if ((current_time-time_since_change)/CLOCKS_PER_SEC>1)
+	if (2>1)
 	{
 		counter++;
-		time(&time_since_change);
+		//GET TIME
 }
 	return;
 }
@@ -170,7 +171,7 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  time(&time_since_change);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -180,6 +181,25 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
+	  	time(&current_time);
+	  	if (strlen(buf)>0)
+	  	{
+
+	  		execute_command(&buf,&huart3,&hrng);
+	  	}
+
+	  	memset(buf,0,BUFFER_SIZE);
+	  	switch(MODE)
+	  	{
+	  	case PARTY_MODE:
+	  		PARTY_TICK();
+	  		break;
+	  	case COUNTING_MODE:
+	  		COUNTING_TICK();
+	  		break;
+	  	}
+	  	if(MODE!=MAIN_MODE) UI_CHANGE();
   }
   /* USER CODE END 3 */
 }
@@ -288,7 +308,12 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-
+  RTCTimeType.Hours=0;
+  RTCTimeType.Minutes=0;
+  RTCTimeType.SecondFraction=20;
+  RTCTimeType.Seconds=0;
+  RTCTimeType.SubSeconds=0;
+  RTCTimeType.TimeFormat=RTC_HOURFORMAT12_AM;
   /* USER CODE END RTC_Init 2 */
 
 }
