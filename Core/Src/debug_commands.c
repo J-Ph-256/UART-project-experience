@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -45,18 +46,25 @@ void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
 	sprintf(&response,"RNG is %lui",result);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
-void PARTY_MODE_CHANGE(int *MODE)
+
+void PARTY_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=PARTY_MODE;
+	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
 }
-void COUNTING_MODE_CHANGE(int *MODE)
+
+void COUNTING_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=COUNTING_MODE;
+	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
 }
-void NORMAL_MODE_CHANGE(int *MODE)
+
+void NORMAL_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 {
 	*MODE=MAIN_MODE;
+	HAL_UART_Transmit(UART,&RESP,strlen(RESP),5);
 }
+
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng,int *mode)
 {
 		if(*mode==0){
@@ -77,8 +85,8 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
 		}
-		if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(mode);
-		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(mode);
-		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE(mode);
+		if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE(UARTHANDLE,mode);
+		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(UARTHANDLE,mode);
+		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE(UARTHANDLE,mode);
 
 }

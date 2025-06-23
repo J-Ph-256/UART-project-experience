@@ -18,9 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "debug_commands.h"
-#include "stdio.h"
-#include "string.h"
 #include "time.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -45,6 +42,8 @@
 /* Private variables ---------------------------------------------------------*/
 RNG_HandleTypeDef hrng;
 
+RTC_HandleTypeDef hrtc;
+
 UART_HandleTypeDef huart3;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
@@ -52,8 +51,8 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 /* USER CODE BEGIN PV */
 volatile char buf[BUFFER_SIZE];
 int counter=0;
-time_t time_since_change;
-time_t current_time;
+clock_t time_since_change;
+clock_t current_time;
 int MODE;
 /* USER CODE END PV */
 
@@ -63,6 +62,7 @@ static void MX_GPIO_Init(void);
 static void MX_RNG_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -71,7 +71,7 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN 0 */
 void PARTY_TICK()
 {
-	if (current_time-time_since_change>0.25)
+	if ((current_time-time_since_change)/CLOCKS_PER_SEC>0.25)
 	{
 		HAL_RNG_GenerateRandomNumber(&hrng,&counter);
 		time(&time_since_change);
@@ -80,7 +80,7 @@ void PARTY_TICK()
 }
 void COUNTING_TICK()
 {
-	if (current_time-time_since_change>1)
+	if ((current_time-time_since_change)/CLOCKS_PER_SEC>1)
 	{
 		counter++;
 		time(&time_since_change);
@@ -168,35 +168,16 @@ int main(void)
   MX_RNG_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   time(&time_since_change);
   /* USER CODE END 2 */
-  MODE=MAIN_MODE;
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
-	HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
-	time(&current_time);
-	if (strlen(buf)>0)
-	{
-
-		execute_command(&buf,&huart3,&hrng,&MODE);
-	}
-
-	memset(buf,0,BUFFER_SIZE);
-	switch(MODE)
-	{
-	case PARTY_MODE:
-		PARTY_TICK();
-		break;
-	case COUNTING_MODE:
-		COUNTING_TICK();
-		break;
-	}
-	if(MODE!=MAIN_MODE) UI_CHANGE();
 
     /* USER CODE BEGIN 3 */
   }
@@ -220,8 +201,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 8;
@@ -272,6 +255,41 @@ static void MX_RNG_Init(void)
   /* USER CODE BEGIN RNG_Init 2 */
 
   /* USER CODE END RNG_Init 2 */
+
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
 
 }
 
