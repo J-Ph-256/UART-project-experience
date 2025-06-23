@@ -48,12 +48,13 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-RTC_TimeTypeDef RTCTimeType;
+RTC_TimeTypeDef RTCTimeTypeCurrent;
+RTC_TimeTypeDef RTCTimeTypeSinceChange;
 volatile char buf[BUFFER_SIZE];
 
 int counter;
-float time_since_change;
-float current_time;
+int time_since_change;
+int current_time;
 int MODE;
 /* USER CODE END PV */
 
@@ -70,21 +71,21 @@ static void MX_RTC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void PARTY_TICK()
+void PARTY_TICK(int timeDelta)
 {
-	if (1>0.25)
+	if (timeDelta>250)
 	{
 		HAL_RNG_GenerateRandomNumber(&hrng,&counter);
-		//GET TIME
+		time_since_change=HAL_GetTick();
 	}
 	return;
 }
-void COUNTING_TICK()
+void COUNTING_TICK(int timeDelta)
 {
-	if (2>1)
+	if (timeDelta>1000)
 	{
 		counter++;
-		//GET TIME
+		time_since_change=HAL_GetTick();
 }
 	return;
 }
@@ -173,6 +174,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
   MODE=0;
   counter=0;
+  HAL_RTC_SetTime(&hrtc,&RTCTimeTypeCurrent,RTC_FORMAT_BIN);
+  HAL_RTC_SetTime(&hrtc,&RTCTimeTypeSinceChange,RTC_FORMAT_BIN);
+
+
+  HAL_RTC_GetTime(&hrtc,&RTCTimeTypeCurrent,RTC_FORMAT_BIN);
+  HAL_RTC_GetTime(&hrtc,&RTCTimeTypeSinceChange,RTC_FORMAT_BIN);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -182,21 +189,22 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  current_time=HAL_GetTick();
+	  int timedelta=current_time-time_since_change;
 	  HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
 	  if (strlen(buf)>0)
 	  {
 
 	  	execute_command(&buf,&huart3,&hrng,&MODE);
 	  }
-
 	  memset(buf,0,BUFFER_SIZE);
 	  switch(MODE)
 	  {
 	  case PARTY_MODE:
-	  	PARTY_TICK();
+	  	PARTY_TICK(timedelta);
 	  	break;
 	  case COUNTING_MODE:
-	  	COUNTING_TICK();
+	  	COUNTING_TICK(timedelta);
 	  	break;
 	  }
 	  if(MODE!=MAIN_MODE) UI_CHANGE();
@@ -308,12 +316,11 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-  RTCTimeType.Hours=0;
-  RTCTimeType.Minutes=0;
-  RTCTimeType.SecondFraction=20;
-  RTCTimeType.Seconds=0;
-  RTCTimeType.SubSeconds=0;
-  RTCTimeType.TimeFormat=RTC_HOURFORMAT12_AM;
+  RTCTimeTypeCurrent.SecondFraction=100;
+  RTCTimeTypeCurrent.TimeFormat=RTC_HOURFORMAT12_AM;
+
+  RTCTimeTypeSinceChange.SecondFraction=100;
+  RTCTimeTypeSinceChange.TimeFormat=RTC_HOURFORMAT12_AM;
   /* USER CODE END RTC_Init 2 */
 
 }
