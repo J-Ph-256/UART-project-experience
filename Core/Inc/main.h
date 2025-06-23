@@ -36,7 +36,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+volatile int MODE;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -94,6 +94,9 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 #define BUFFER_SIZE 256
+#define MAIN_MODE 0
+#define PARTY_MODE 1
+#define COUNTING_MODE 2
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -10,6 +10,12 @@ static const char LED_GREEN[]="LED GREEN";
 
 static const char RNG_CALL[]="RNG:";
 
+static const char PARTY_TIME[]="PARTY";
+
+static const char COUNTING[]="COUNT UP";
+
+static const char RETURN[]="NORMAL";
+
 static const char RESP[]="UNDERSTOOD\n";
 
 
@@ -34,15 +40,26 @@ void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
 	uint32_t result;
 	char response[64];
 	HAL_RNG_GenerateRandomNumber(hrng,&result);
-	uint32_t newresult=result%number;
-	newresult++;
-	sprintf(&response,"RNG is %i",newresult);
+	result=result%number;
+	result++;
+	sprintf(&response,"RNG is %lui",result);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
-
-
+void PARTY_MODE_CHANGE()
+{
+	MODE=PARTY_MODE;
+}
+void COUNTING_MODE_CHANGE()
+{
+	MODE=COUNTING_MODE;
+}
+void NORMAL_MODE_CHANGE()
+{
+	MODE=MAIN_MODE;
+}
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng)
 {
+		if(MODE==0){
 		if (strcmp(LED_RED,command)==0) LED_RED_RESP(UARTHANDLE);
 
 		else if (strcmp(LED_BLUE,command)==0) LED_BLUE_RESP(UARTHANDLE);
@@ -59,6 +76,9 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 		}
 
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
+		}
+		if (strcmp(PARTY_TIME,command)==0) PARTY_MODE_CHANGE();
+		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE();
+		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE();
 
-		HAL_Delay(10);
 }

@@ -21,6 +21,7 @@
 #include "debug_commands.h"
 #include "stdio.h"
 #include "string.h"
+#include "time.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -49,7 +50,11 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-char buf[BUFFER_SIZE];
+volatile char buf[BUFFER_SIZE];
+volatile int MODE=0;
+int counter=0;
+time_t time_since_change;
+time_t current_time;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,7 +69,71 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void PARTY_TICK()
+{
+	if (current_time-time_since_change>0.25)
+	{
+		HAL_RNG_GenerateRandomNumber(hrng,&counter);
+		time(&time_since_change);
+	}
+	return;
+}
+void COUNTING_TICK()
+{
+	if (current_time-time_since_change>1)
+	{
+		counter++;
+		time(&time_since_change);
+}
+	return;
+}
 
+void UI_CHANGE()
+{
+	switch(counter%8)
+	{
+	case 0:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_RESET);
+		break;
+	case 1:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_RESET);
+		break;
+	case 2:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_RESET);
+		break;
+	case 3:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_RESET);
+		break;
+	case 4:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET);
+		break;
+	case 5:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET);
+		break;
+	case 6:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET);
+		break;
+	case 7:
+		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET);
+		break;
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -100,7 +169,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-
+  time(&time_since_change);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,7 +179,7 @@ int main(void)
     /* USER CODE END WHILE */
 
 	HAL_UART_Receive(&huart3,&buf,BUFFER_SIZE,5);
-
+	time(&current_time);
 	if (strlen(buf)>0)
 	{
 
@@ -118,6 +187,17 @@ int main(void)
 	}
 
 	memset(buf,0,BUFFER_SIZE);
+	switch(MODE)
+	{
+	case PARTY_MODE:
+		PARTY_TICK();
+		break;
+	case COUNTING_MODE:
+		COUNTING_TICK();
+		break;
+	}
+	if(MODE!=MAIN_MODE) UI_CHANGE();
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
