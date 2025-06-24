@@ -84,23 +84,35 @@ void COUNTING_TICK(int timeDelta)
 {
 	if (timeDelta>1000)
 	{
-		counter++;
+		if (MODE==COUNTING_MODE) counter++;
+		else counter--;
 		time_since_change=HAL_GetTick();
 		sprintf(&buf,"Counter is %lu\n",counter);
 }
 	return;
 }
-void COUNTING_DOWN_TICK(int timeDelta)
-{
-	if (timeDelta>1000)
-	{
 
-			counter--;
-			time_since_change=HAL_GetTick();
-			sprintf(&buf,"Counter is %lu\n",counter);
+void WAVE_TICK(int timeDelta)
+{
+	if (timeDelta>250)
+	{
+		switch(counter%8)
+		{
+		case 1:
+			counter++;
+			break;
+		case 2:
+			counter+=2;
+			break;
+		case 4:
+			counter+=5;
+			break;
+		default:
+			counter=1;
+		}
+	}
 }
-	return;
-}
+
 
 void UI_CHANGE()
 {
@@ -210,6 +222,8 @@ int main(void)
 
 	  	execute_command(&buf,&huart3,&hrng,&MODE);
 	  }
+	  memset(buf,0,BUFFER_SIZE);
+
 	  switch(MODE)
 	  {
 	  case PARTY_MODE:
@@ -219,7 +233,8 @@ int main(void)
 	  	COUNTING_TICK(timedelta);
 	  	break;
 	  case COUNTING_DOWN_MODE:
-		COUNTING_DOWN_TICK(timedelta);
+		COUNTING_TICK(timedelta);
+		break;
 	  }
 	  if(MODE!=MAIN_MODE) UI_CHANGE();
 	  memset(buf,0,BUFFER_SIZE);

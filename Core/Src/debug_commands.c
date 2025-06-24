@@ -17,6 +17,8 @@ static const char COUNTING[]="COUNT UP";
 
 static const char COUNTING_DOWN[]="COUNT DOWN";
 
+static const char WAVE[]="WAVE";
+
 static const char RETURN[]="RETURN";
 
 static const char RESP[]="UNDERSTOOD\n";
@@ -82,7 +84,13 @@ void NORMAL_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 	sprintf(&response,"MODE is %i\n",*MODE);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
-
+void WAVE_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
+{
+	*MODE=WAVE_MODE;
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
+}
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng,int *mode)
 {
 		if (strcmp(LED_RED,command)==0) LED_RED_RESP(UARTHANDLE);
@@ -103,6 +111,7 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 		else if (strcmp(COUNTING,command)==0) COUNTING_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(RETURN,command)==0) NORMAL_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(COUNTING_DOWN,command)==0) COUNTING_DOWN_MODE_CHANGE(UARTHANDLE,mode);
+		else if (strcmp(WAVE,command)==0) WAVE_MODE_CHANGE(UARTHANDLE,mode);
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
 
 }

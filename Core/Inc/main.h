@@ -97,6 +97,7 @@ void Error_Handler(void);
 #define PARTY_MODE 1
 #define COUNTING_MODE 2
 #define COUNTING_DOWN_MODE 3
+#define WAVE_MODE 4
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
