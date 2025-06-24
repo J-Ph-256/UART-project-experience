@@ -102,14 +102,17 @@ void WAVE_TICK(int timeDelta)
 			counter++;
 			break;
 		case 2:
-			counter+=2;
+			counter=4;
 			break;
 		case 4:
-			counter+=5;
+			counter=1;
 			break;
 		default:
 			counter=1;
+			break;
+
 		}
+	time_since_change=HAL_GetTick();
 	}
 }
 
@@ -234,6 +237,9 @@ int main(void)
 	  	break;
 	  case COUNTING_DOWN_MODE:
 		COUNTING_TICK(timedelta);
+		break;
+	  case WAVE_MODE:
+		WAVE_TICK(timedelta);
 		break;
 	  }
 	  if(MODE!=MAIN_MODE) UI_CHANGE();
