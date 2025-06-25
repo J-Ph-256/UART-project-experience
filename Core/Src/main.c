@@ -49,8 +49,6 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-RTC_TimeTypeDef RTCTimeTypeCurrent;
-RTC_TimeTypeDef RTCTimeTypeSinceChange;
 volatile char buf[BUFFER_SIZE];
 
 uint32_t counter;
@@ -133,9 +131,9 @@ void IDLE_CHECK(int timeDelta)
 		sprintf(&buf,"Hello?\n");
 	}
 }
-void SINE_TICK(int timeDelta,int progress)
+void SINE_WAVE_TICK(int timeDelta)
 {
-
+	return;
 }
 
 void UI_CHANGE()
@@ -223,12 +221,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   MODE=0;
   counter=0;
-  HAL_RTC_SetTime(&hrtc,&RTCTimeTypeCurrent,RTC_FORMAT_BIN);
-  HAL_RTC_SetTime(&hrtc,&RTCTimeTypeSinceChange,RTC_FORMAT_BIN);
 
-
-  HAL_RTC_GetTime(&hrtc,&RTCTimeTypeCurrent,RTC_FORMAT_BIN);
-  HAL_RTC_GetTime(&hrtc,&RTCTimeTypeSinceChange,RTC_FORMAT_BIN);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -265,7 +258,9 @@ int main(void)
 	  case INVERT_MODE:
 		  INVERT_TICK(timedelta);
 		  break;
-	  case SINE_MODE:(timedelta);
+	  case SINE_WAVE_MODE:
+		  SINE_WAVE_TICK(timedelta);
+	  	  break;
 	  case MAIN_MODE:
 		  IDLE_CHECK(timedelta);
 		  break;
