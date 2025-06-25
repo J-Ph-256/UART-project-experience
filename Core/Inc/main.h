@@ -48,6 +48,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -99,6 +101,7 @@ void Error_Handler(void);
 #define COUNTING_DOWN_MODE 3
 #define WAVE_MODE 4
 #define INVERT_MODE 5
+#define SINE_MODE 6
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

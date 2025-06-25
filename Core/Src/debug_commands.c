@@ -101,6 +101,13 @@ void INVERT_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
 
+void SINE_MODE(UART_HandleTypeDef* UART,int *MODE)
+{
+	*MODE=SINE_MODE;
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
+}
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng,int *mode)
 {
 		if (strcmp(LED_RED,command)==0) LED_RED_RESP(UARTHANDLE);
