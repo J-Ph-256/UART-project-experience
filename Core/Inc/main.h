@@ -98,6 +98,7 @@ void Error_Handler(void);
 #define COUNTING_MODE 2
 #define COUNTING_DOWN_MODE 3
 #define WAVE_MODE 4
+#define INVERT_MODE 5
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -116,11 +116,27 @@ void WAVE_TICK(int timeDelta)
 	}
 }
 
+void INVERT_TICK(int timeDelta)
+{
+	if (timeDelta>250)
+	{
+	counter=~counter;
+	time_since_change=HAL_GetTick();
+	}
+}
+void IDLE_CHECK(int timeDelta)
+{
+	if (timeDelta>60000)
+	{
+		time_since_change=HAL_GetTick();
+		sprintf(&buf,"Hello?\n");
+	}
+}
 
 void UI_CHANGE()
 {
 	HAL_UART_Transmit(&huart3,&buf,strlen(&buf),5);
-	switch(counter%8)
+	if (MODE!=MAIN_MODE) switch(counter%8)
 	{
 	case 0:
 		HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_RESET);
@@ -230,19 +246,25 @@ int main(void)
 	  switch(MODE)
 	  {
 	  case PARTY_MODE:
-	  	PARTY_TICK(timedelta);
-	  	break;
+		  PARTY_TICK(timedelta);
+	  		break;
 	  case COUNTING_MODE:
-	  	COUNTING_TICK(timedelta);
-	  	break;
+		  COUNTING_TICK(timedelta);
+	  		break;
 	  case COUNTING_DOWN_MODE:
-		COUNTING_TICK(timedelta);
-		break;
+		  COUNTING_TICK(timedelta);
+		  break;
 	  case WAVE_MODE:
-		WAVE_TICK(timedelta);
-		break;
+		  WAVE_TICK(timedelta);
+		  break;
+	  case INVERT_MODE:
+		  INVERT_TICK(timedelta);
+		  break;
+	  case MAIN_MODE:
+		  IDLE_CHECK(timedelta);
+		  break;
 	  }
-	  if(MODE!=MAIN_MODE) UI_CHANGE();
+	  UI_CHANGE();
 	  memset(buf,0,BUFFER_SIZE);
 
   }
