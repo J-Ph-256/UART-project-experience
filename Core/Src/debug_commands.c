@@ -21,6 +21,8 @@ static const char WAVE[]="WAVE";
 
 static const char RETURN[]="RETURN";
 
+static const char GET_MODE[]="GET MODE";
+
 static const char INVERT[]="INVERT";
 
 static const char RESP[]="UNDERSTOOD\n";
@@ -103,11 +105,20 @@ void INVERT_MODE_CHANGE(UART_HandleTypeDef* UART,int *MODE)
 
 void SINE_MODE(UART_HandleTypeDef* UART,int *MODE)
 {
-	*MODE=SINE_MODE;
+	*MODE=SINE_WAVE_MODE;
 	char response[64];
 	sprintf(&response,"MODE is %i\n",*MODE);
 	HAL_UART_Transmit(UART,&response,strlen(response),5);
 }
+
+
+void SEND_CURRENT_MODE(UART_HandleTypeDef* UART,int *MODE)
+{
+	char response[64];
+	sprintf(&response,"MODE is %i\n",*MODE);
+	HAL_UART_Transmit(UART,&response,strlen(response),5);
+}
+
 void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_HandleTypeDef* hrng,int *mode)
 {
 		if (strcmp(LED_RED,command)==0) LED_RED_RESP(UARTHANDLE);
@@ -130,6 +141,7 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
 		else if (strcmp(COUNTING_DOWN,command)==0) COUNTING_DOWN_MODE_CHANGE(UARTHANDLE,mode);
 		else if (strcmp(WAVE,command)==0) WAVE_MODE_CHANGE(UARTHANDLE,mode);
 		else if(strcmp(INVERT,command)==0) INVERT_MODE_CHANGE(UARTHANDLE,mode);
+		else if(strcmp(GET_MODE,command)==0) SEND_CURRENT_MODE(UARTHANDLE,mode);
 		else HAL_UART_Transmit(UARTHANDLE,command,strlen(command),5);
 
 }

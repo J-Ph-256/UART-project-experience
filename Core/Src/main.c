@@ -133,7 +133,11 @@ void IDLE_CHECK(int timeDelta)
 }
 void SINE_WAVE_TICK(int timeDelta)
 {
-	return;
+	if (timeDelta>10000)
+		{
+			time_since_change=HAL_GetTick();
+			sprintf(&buf,"It's not done yet!!!\n");
+		}
 }
 
 void UI_CHANGE()
@@ -554,7 +558,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void CHANGE_PWM_PULSE(int Pulse)
+{
 
+}
 /* USER CODE END 4 */
 
 /**

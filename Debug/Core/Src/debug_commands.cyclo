@@ -1,0 +1,13 @@
+../Core/Src/debug_commands.c:31:6:LED_GREEN_RESP	1
+../Core/Src/debug_commands.c:36:6:LED_BLUE_RESP	1
+../Core/Src/debug_commands.c:42:6:LED_RED_RESP	1
+../Core/Src/debug_commands.c:47:6:RNG_CALL_RESP	3
+../Core/Src/debug_commands.c:60:6:PARTY_MODE_CHANGE	1
+../Core/Src/debug_commands.c:68:6:COUNTING_MODE_CHANGE	1
+../Core/Src/debug_commands.c:76:6:COUNTING_DOWN_MODE_CHANGE	1
+../Core/Src/debug_commands.c:84:6:NORMAL_MODE_CHANGE	1
+../Core/Src/debug_commands.c:91:6:WAVE_MODE_CHANGE	1
+../Core/Src/debug_commands.c:98:6:INVERT_MODE_CHANGE	1
+../Core/Src/debug_commands.c:106:6:SINE_MODE	1
+../Core/Src/debug_commands.c:115:6:SEND_CURRENT_MODE	1
+../Core/Src/debug_commands.c:122:6:execute_command	12
