@@ -12,5 +12,5 @@
 ../Core/Src/main.c:438:13:MX_USART3_UART_Init	2
 ../Core/Src/main.c:471:13:MX_USB_OTG_FS_PCD_Init	2
 ../Core/Src/main.c:507:13:MX_GPIO_Init	1
-../Core/Src/main.c:561:13:CHANGE_PWM_PULSE	1
-../Core/Src/main.c:571:6:Error_Handler	1
+../Core/Src/main.c:561:6:HAL_GPIO_EXTI_Callback	1
+../Core/Src/main.c:576:6:Error_Handler	1

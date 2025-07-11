@@ -125,7 +125,7 @@ void INVERT_TICK(int timeDelta)
 }
 void IDLE_CHECK(int timeDelta)
 {
-	if (timeDelta>60000)
+	if (timeDelta>300000)
 	{
 		time_since_change=HAL_GetTick();
 		sprintf(&buf,"Hello?\n");
@@ -241,6 +241,7 @@ int main(void)
 	  if (strlen(buf)>0)
 	  {
 
+		time_since_change=HAL_GetTick();
 	  	execute_command(&buf,&huart3,&hrng,&MODE);
 	  }
 	  memset(buf,0,BUFFER_SIZE);
@@ -558,9 +559,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-static void CHANGE_PWM_PULSE(int Pulse)
+void HAL_GPIO_EXTI_Callback (uint16_t GPIO_Pin)
 {
-
+	sprintf(&buf,"Button Pressed %i\n",GPIO_Pin);
+	counter=8;
+	HAL_GPIO_WritePin(LD1_GPIO_Port,LD1_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET);
+	HAL_UART_Transmit(&huart3,&buf,strlen(&buf),5);
 }
 /* USER CODE END 4 */
 

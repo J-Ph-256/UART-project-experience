@@ -7,45 +7,45 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00005dd0  080001d0  080001d0  000011d0  2**4
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000244  08005fa0  08005fa0  00006fa0  2**2
+  2 .rodata       00000258  08005fa0  08005fa0  00006fa0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  080061e4  080061e4  0000805c  2**0
+  3 .ARM.extab    00000000  080061f8  080061f8  0000805c  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000008  080061e4  080061e4  000071e4  2**2
+  4 .ARM          00000008  080061f8  080061f8  000071f8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  080061ec  080061ec  0000805c  2**0
+  5 .preinit_array 00000000  08006200  08006200  0000805c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080061ec  080061ec  000071ec  2**2
+  6 .init_array   00000004  08006200  08006200  00007200  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  080061f0  080061f0  000071f0  2**2
+  7 .fini_array   00000004  08006204  08006204  00007204  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         0000005c  20000000  080061f4  00008000  2**2
+  8 .data         0000005c  20000000  08006208  00008000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000800  2000005c  08006250  0000805c  2**2
+  9 .bss          00000800  2000005c  08006264  0000805c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  2000085c  08006250  0000885c  2**0
+ 10 ._user_heap_stack 00000604  2000085c  08006264  0000885c  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0000805c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0001300b  00000000  00000000  0000808c  2**0
+ 12 .debug_info   0001302f  00000000  00000000  0000808c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00002b4b  00000000  00000000  0001b097  2**0
+ 13 .debug_abbrev 00002b34  00000000  00000000  0001b0bb  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001158  00000000  00000000  0001dbe8  2**3
+ 14 .debug_aranges 00001158  00000000  00000000  0001dbf0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000d7b  00000000  00000000  0001ed40  2**0
+ 15 .debug_rnglists 00000d7b  00000000  00000000  0001ed48  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00020dad  00000000  00000000  0001fabb  2**0
+ 16 .debug_macro  00020dad  00000000  00000000  0001fac3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00014984  00000000  00000000  00040868  2**0
+ 17 .debug_line   0001499b  00000000  00000000  00040870  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000c6531  00000000  00000000  000551ec  2**0
+ 18 .debug_str    000c6520  00000000  00000000  0005520b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0011b71d  2**0
+ 19 .comment      00000043  00000000  00000000  0011b72b  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00005000  00000000  00000000  0011b760  2**2
+ 20 .debug_frame  00004ffc  00000000  00000000  0011b770  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000065  00000000  00000000  00120760  2**0
+ 21 .debug_line_str 00000065  00000000  00000000  0012076c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -476,7 +476,7 @@ void LED_GREEN_RESP(UART_HandleTypeDef* UART){
  800062c:	46bd      	mov	sp, r7
  800062e:	bd80      	pop	{r7, pc}
  8000630:	40020400 	.word	0x40020400
- 8000634:	0800608c 	.word	0x0800608c
+ 8000634:	080060a0 	.word	0x080060a0
 
 08000638 <LED_BLUE_RESP>:
 
@@ -502,7 +502,7 @@ void LED_BLUE_RESP(UART_HandleTypeDef* UART)
  8000658:	46bd      	mov	sp, r7
  800065a:	bd80      	pop	{r7, pc}
  800065c:	40020400 	.word	0x40020400
- 8000660:	0800608c 	.word	0x0800608c
+ 8000660:	080060a0 	.word	0x080060a0
 
 08000664 <LED_RED_RESP>:
 
@@ -529,7 +529,7 @@ void LED_RED_RESP(UART_HandleTypeDef* UART)
  8000688:	bd80      	pop	{r7, pc}
  800068a:	bf00      	nop
  800068c:	40020400 	.word	0x40020400
- 8000690:	0800608c 	.word	0x0800608c
+ 8000690:	080060a0 	.word	0x080060a0
 
 08000694 <RNG_CALL_RESP>:
 void RNG_CALL_RESP(UART_HandleTypeDef* UART,int number,RNG_HandleTypeDef* hrng)
@@ -1048,17 +1048,17 @@ void execute_command(char* command[],UART_HandleTypeDef * UARTHANDLE, RNG_Handle
  8000a5e:	3718      	adds	r7, #24
  8000a60:	46bd      	mov	sp, r7
  8000a62:	bd80      	pop	{r7, pc}
- 8000a64:	08006020 	.word	0x08006020
- 8000a68:	08006028 	.word	0x08006028
- 8000a6c:	08006034 	.word	0x08006034
- 8000a70:	08006040 	.word	0x08006040
- 8000a74:	08006048 	.word	0x08006048
- 8000a78:	08006050 	.word	0x08006050
- 8000a7c:	08006070 	.word	0x08006070
- 8000a80:	0800605c 	.word	0x0800605c
- 8000a84:	08006068 	.word	0x08006068
- 8000a88:	08006084 	.word	0x08006084
- 8000a8c:	08006078 	.word	0x08006078
+ 8000a64:	08006034 	.word	0x08006034
+ 8000a68:	0800603c 	.word	0x0800603c
+ 8000a6c:	08006048 	.word	0x08006048
+ 8000a70:	08006054 	.word	0x08006054
+ 8000a74:	0800605c 	.word	0x0800605c
+ 8000a78:	08006064 	.word	0x08006064
+ 8000a7c:	08006084 	.word	0x08006084
+ 8000a80:	08006070 	.word	0x08006070
+ 8000a84:	0800607c 	.word	0x0800607c
+ 8000a88:	08006098 	.word	0x08006098
+ 8000a8c:	0800608c 	.word	0x0800608c
 
 08000a90 <PARTY_TICK>:
 /* USER CODE END PFP */
@@ -1270,29 +1270,29 @@ void IDLE_CHECK(int timeDelta)
  8000bce:	b082      	sub	sp, #8
  8000bd0:	af00      	add	r7, sp, #0
  8000bd2:	6078      	str	r0, [r7, #4]
-	if (timeDelta>60000)
+	if (timeDelta>300000)
  8000bd4:	687b      	ldr	r3, [r7, #4]
- 8000bd6:	f64e 2260 	movw	r2, #60000	@ 0xea60
- 8000bda:	4293      	cmp	r3, r2
- 8000bdc:	dd09      	ble.n	8000bf2 <IDLE_CHECK+0x26>
+ 8000bd6:	4a08      	ldr	r2, [pc, #32]	@ (8000bf8 <IDLE_CHECK+0x2c>)
+ 8000bd8:	4293      	cmp	r3, r2
+ 8000bda:	dd09      	ble.n	8000bf0 <IDLE_CHECK+0x24>
 	{
 		time_since_change=HAL_GetTick();
- 8000bde:	f000 fe51 	bl	8001884 <HAL_GetTick>
- 8000be2:	4603      	mov	r3, r0
- 8000be4:	461a      	mov	r2, r3
- 8000be6:	4b05      	ldr	r3, [pc, #20]	@ (8000bfc <IDLE_CHECK+0x30>)
- 8000be8:	601a      	str	r2, [r3, #0]
+ 8000bdc:	f000 fe52 	bl	8001884 <HAL_GetTick>
+ 8000be0:	4603      	mov	r3, r0
+ 8000be2:	461a      	mov	r2, r3
+ 8000be4:	4b05      	ldr	r3, [pc, #20]	@ (8000bfc <IDLE_CHECK+0x30>)
+ 8000be6:	601a      	str	r2, [r3, #0]
 		sprintf(&buf,"Hello?\n");
- 8000bea:	4905      	ldr	r1, [pc, #20]	@ (8000c00 <IDLE_CHECK+0x34>)
- 8000bec:	4805      	ldr	r0, [pc, #20]	@ (8000c04 <IDLE_CHECK+0x38>)
- 8000bee:	f004 fd0b 	bl	8005608 <siprintf>
+ 8000be8:	4905      	ldr	r1, [pc, #20]	@ (8000c00 <IDLE_CHECK+0x34>)
+ 8000bea:	4806      	ldr	r0, [pc, #24]	@ (8000c04 <IDLE_CHECK+0x38>)
+ 8000bec:	f004 fd0c 	bl	8005608 <siprintf>
 	}
 }
- 8000bf2:	bf00      	nop
- 8000bf4:	3708      	adds	r7, #8
- 8000bf6:	46bd      	mov	sp, r7
- 8000bf8:	bd80      	pop	{r7, pc}
- 8000bfa:	bf00      	nop
+ 8000bf0:	bf00      	nop
+ 8000bf2:	3708      	adds	r7, #8
+ 8000bf4:	46bd      	mov	sp, r7
+ 8000bf6:	bd80      	pop	{r7, pc}
+ 8000bf8:	000493e0 	.word	0x000493e0
  8000bfc:	20000700 	.word	0x20000700
  8000c00:	08006000 	.word	0x08006000
  8000c04:	200005fc 	.word	0x200005fc
@@ -3368,7 +3368,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  80017a4:	2000005c 	.word	0x2000005c
   ldr r2, =_sidata
- 80017a8:	080061f4 	.word	0x080061f4
+ 80017a8:	08006208 	.word	0x08006208
   ldr r2, =_sbss
  80017ac:	2000005c 	.word	0x2000005c
   ldr r4, =_ebss
@@ -5546,7 +5546,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef  *RCC_ClkInitStru
  80023e6:	bf00      	nop
  80023e8:	40023c00 	.word	0x40023c00
  80023ec:	40023800 	.word	0x40023800
- 80023f0:	08006098 	.word	0x08006098
+ 80023f0:	080060ac 	.word	0x080060ac
  80023f4:	20000000 	.word	0x20000000
  80023f8:	20000004 	.word	0x20000004
 
@@ -5850,7 +5850,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  800263c:	4618      	mov	r0, r3
  800263e:	bd80      	pop	{r7, pc}
  8002640:	40023800 	.word	0x40023800
- 8002644:	080060a8 	.word	0x080060a8
+ 8002644:	080060bc 	.word	0x080060bc
 
 08002648 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -5876,7 +5876,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8002664:	4618      	mov	r0, r3
  8002666:	bd80      	pop	{r7, pc}
  8002668:	40023800 	.word	0x40023800
- 800266c:	080060a8 	.word	0x080060a8
+ 800266c:	080060bc 	.word	0x080060bc
 
 08002670 <HAL_RCCEx_PeriphCLKConfig>:
   *         the backup registers) and RCC_BDCR register are set to their reset values.
@@ -13976,7 +13976,7 @@ static HAL_StatusTypeDef USB_CoreReset(USB_OTG_GlobalTypeDef *USBx)
  80055e8:	d1f6      	bne.n	80055d8 <_strtol_l.isra.0+0xd8>
  80055ea:	f8c8 1000 	str.w	r1, [r8]
  80055ee:	e794      	b.n	800551a <_strtol_l.isra.0+0x1a>
- 80055f0:	080060b1 	.word	0x080060b1
+ 80055f0:	080060c5 	.word	0x080060c5
 
 080055f4 <strtol>:
  80055f4:	4613      	mov	r3, r2
@@ -14093,10 +14093,10 @@ static HAL_StatusTypeDef USB_CoreReset(USB_OTG_GlobalTypeDef *USBx)
  80056da:	4798      	blx	r3
  80056dc:	3601      	adds	r6, #1
  80056de:	e7f2      	b.n	80056c6 <__libc_init_array+0x1e>
- 80056e0:	080061ec 	.word	0x080061ec
- 80056e4:	080061ec 	.word	0x080061ec
- 80056e8:	080061ec 	.word	0x080061ec
- 80056ec:	080061f0 	.word	0x080061f0
+ 80056e0:	08006200 	.word	0x08006200
+ 80056e4:	08006200 	.word	0x08006200
+ 80056e8:	08006200 	.word	0x08006200
+ 80056ec:	08006204 	.word	0x08006204
 
 080056f0 <__retarget_lock_acquire_recursive>:
  80056f0:	4770      	bx	lr
@@ -14602,11 +14602,11 @@ static HAL_StatusTypeDef USB_CoreReset(USB_OTG_GlobalTypeDef *USBx)
  8005b78:	4638      	mov	r0, r7
  8005b7a:	f000 f879 	bl	8005c70 <_printf_i>
  8005b7e:	e7ed      	b.n	8005b5c <_svfiprintf_r+0x1c0>
- 8005b80:	080061b1 	.word	0x080061b1
- 8005b84:	080061bb 	.word	0x080061bb
+ 8005b80:	080061c5 	.word	0x080061c5
+ 8005b84:	080061cf 	.word	0x080061cf
  8005b88:	00000000 	.word	0x00000000
  8005b8c:	080058e5 	.word	0x080058e5
- 8005b90:	080061b7 	.word	0x080061b7
+ 8005b90:	080061cb 	.word	0x080061cb
 
 08005b94 <_printf_common>:
  8005b94:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -14935,8 +14935,8 @@ static HAL_StatusTypeDef USB_CoreReset(USB_OTG_GlobalTypeDef *USBx)
  8005e9c:	2500      	movs	r5, #0
  8005e9e:	f104 0619 	add.w	r6, r4, #25
  8005ea2:	e7f5      	b.n	8005e90 <_printf_i+0x220>
- 8005ea4:	080061c2 	.word	0x080061c2
- 8005ea8:	080061d3 	.word	0x080061d3
+ 8005ea4:	080061d6 	.word	0x080061d6
+ 8005ea8:	080061e7 	.word	0x080061e7
 
 08005eac <memmove>:
  8005eac:	4288      	cmp	r0, r1
